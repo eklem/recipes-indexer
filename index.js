@@ -5,16 +5,43 @@ var recipesklikk = {
   "ingredients" : []
 }
 
-for (i = 25; i < 28; i++) {
-  var offset = i * 2500;
-  var limit = 10;
+i = 0;
+iterate = true;
+do {
+  var limit = 2500;
+  var offset = i * limit;
   var url = "https://www.kimonolabs.com/api/2t7lj88q?apikey=LAnqfEDgqLNoBU5mzVnigMJqY9sHuK6F&kimlimit=" + limit + "&kimoffset=" + offset;
 
-  console.log(url);
+  // console.log(url);
 
-  var res = request('GET', url);
-  console.log("\n request " + i + ": \n" +res.getBody('utf8'));
-}
+  var kimono = request('GET', url);
+  //console.log("\n request " + i + ": \n" +kimono.getBody('utf8'));
+  var obj = JSON.parse(kimono.getBody('utf8'));
+
+  // console.dir(obj.results.recipes);
+
+  // Check if JSON contains recipes
+  if (obj.results.recipes) {
+
+    // use recipes.length to run throug all recipes and transform JSON to correct structure
+    console.log("Recipes number: " + obj.results.recipes.length);
+  }
+
+  // Check if JSON contains ingredients
+  if (obj.results.ingredients) {
+
+    // use ingredients.length to run throug all recipes and transform JSON to correct structure
+    console.log("Ingredients number: " + obj.results.ingredients.length);
+  }
+
+  // use obj.count to determin end of do/while loop, i.e. set a variable "iterate" to false
+  console.log("Object count: " + obj.count);
+  console.log("Iteration: " + i + "\n");
+  if (obj.count < limit) {
+    iterate = false;
+  }
+  i++;
+} while (iterate);
 
 
 
