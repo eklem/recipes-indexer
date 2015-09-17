@@ -14,34 +14,43 @@ do {
 
   // console.log(url);
 
-  var kimono = request('GET', url);
-  //console.log("\n request " + i + ": \n" +kimono.getBody('utf8'));
-  var obj = JSON.parse(kimono.getBody('utf8'));
+  var kimono = request('GET', url, {'statusCode': {}});
+  
+
+  // console.log(kimono.statusCode);
 
   // Error handling
+  if (kimono.statusCode >= 400) {
+    console.log("Error, type: " + kimono.statusCode + " on offset: " + offset + "\n");
+  } else {
+    // Process content
+    var obj = JSON.parse(kimono.getBody('utf8'));   
 
-  // Check if JSON contains recipes
-  if (obj.results.recipes) {
-    console.dir(obj.results.recipes);
-    // use recipes.length to run throug all recipes and transform JSON to correct structure
-    console.log("Recipes count    : " + obj.results.recipes.length);
+    // Check if JSON contains recipes
+    if (obj.results.recipes) {
+      // console.dir(obj.results.recipes);
+      // use recipes.length to run throug all recipes and transform JSON to correct structure
+      console.log("Recipes count    : " + obj.results.recipes.length);
+    }
+
+    // Check if JSON contains ingredients
+    if (obj.results.ingredients) {
+      // console.dir(obj.results.ingredients);
+      // use ingredients.length to run throug all recipes and transform JSON to correct structure
+      console.log("Ingredients count: " + obj.results.ingredients.length);
+    }
+
+    // use obj.count to determin end of do/while loop, i.e. set a variable "iterate" to false
+    console.log("Object count     : " + obj.count);
+    console.log("Content batch    : " + i);
+    console.log("HTTP Status code : " + kimono.statusCode + "\n");
+
+
+    if (obj.count < limit) {
+      content = false;
+    }
+    // Logging?
   }
-
-  // Check if JSON contains ingredients
-  if (obj.results.ingredients) {
-    console.dir(obj.results.ingredients);
-    // use ingredients.length to run throug all recipes and transform JSON to correct structure
-    console.log("Ingredients count: " + obj.results.ingredients.length);
-  }
-
-  // use obj.count to determin end of do/while loop, i.e. set a variable "iterate" to false
-  console.log("Object count     : " + obj.count);
-  console.log("Content batch    : " + i + "\n");
-  if (obj.count < limit) {
-    iterate = false;
-  }
-
-  // Logging?
 
   // iterator needed since I'm using do/while
   i++;
