@@ -1,0 +1,26 @@
+{
+  "name": "recipes-indexer",
+  "version": "0.0.1",
+  "description": "Document processor that requests content from a Kimono API and adds it to an instance of search-index",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eklem/recipes-indexer.git"
+  },
+  "keywords": [
+    "recipes",
+    "search",
+    "\"document",
+    "processor\"",
+    "indexer"
+  ],
+  "author": "Espen Klem",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eklem/recipes-indexer/issues"
+  },
+  "homepage": "https://github.com/eklem/recipes-indexer#readme"
+}
