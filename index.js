@@ -6,7 +6,7 @@ var recipesklikk = {
 }
 
 i = 0;
-iterate = true;
+content = true;
 do {
   var limit = 2500;
   var offset = i * limit;
@@ -18,30 +18,34 @@ do {
   //console.log("\n request " + i + ": \n" +kimono.getBody('utf8'));
   var obj = JSON.parse(kimono.getBody('utf8'));
 
-  // console.dir(obj.results.recipes);
+  // Error handling
 
   // Check if JSON contains recipes
   if (obj.results.recipes) {
-
+    console.dir(obj.results.recipes);
     // use recipes.length to run throug all recipes and transform JSON to correct structure
-    console.log("Recipes number: " + obj.results.recipes.length);
+    console.log("Recipes count    : " + obj.results.recipes.length);
   }
 
   // Check if JSON contains ingredients
   if (obj.results.ingredients) {
-
+    console.dir(obj.results.ingredients);
     // use ingredients.length to run throug all recipes and transform JSON to correct structure
-    console.log("Ingredients number: " + obj.results.ingredients.length);
+    console.log("Ingredients count: " + obj.results.ingredients.length);
   }
 
   // use obj.count to determin end of do/while loop, i.e. set a variable "iterate" to false
-  console.log("Object count: " + obj.count);
-  console.log("Iteration: " + i + "\n");
+  console.log("Object count     : " + obj.count);
+  console.log("Content batch    : " + i + "\n");
   if (obj.count < limit) {
     iterate = false;
   }
+
+  // Logging?
+
+  // iterator needed since I'm using do/while
   i++;
-} while (iterate);
+} while (content);
 
 
 
