@@ -1,12 +1,14 @@
 var request = require("sync-request");
-var jhash = require("jhash");
-            jhash.setSymbols('0123456789');
-            // jhash.setMaskLen(6);
+var jhash   = require("jhash");
+              jhash.setSymbols('0123456789');
+var _       = require('lodash');
+
 
 var recipesklikk = {
   "recipes" : [],
   "ingredients" : []
-}
+};
+console.dir(recipesklikk.recipes);
 
 i = 0;
 content = true;
@@ -33,7 +35,7 @@ do {
     if (obj.results.recipes) {
       // console.dir(obj.results.recipes);
       // use recipes.length to run throug all recipes and transform JSON to correct structure
-      // console.log("Recipes count    : " + obj.results.recipes.length);
+      
 
       // Use .map to edit object
       obj.results.recipes.map(function (recipe){
@@ -44,10 +46,13 @@ do {
         if (recipe.cheff.href) {
           recipe.cheff = recipe.cheff.text;
         }
-        recipe.ingredients = [];
+        recipe.ingredients = new Array();
         recipe.id = jhash.hash(recipe.url);
-        console.log("recipe: " + JSON.stringify(recipe, null, 2));
+        // console.log("recipe: " + JSON.stringify(recipe, null, 2));
       })
+      recipesklikk.recipes.push.apply(recipesklikk.recipes, obj.results.recipes);
+      console.log("Recipes count     : " + obj.results.recipes.length);
+      console.log("Recipes array     : " + recipesklikk.recipes.length);
     }
 
     // Check if JSON contains ingredients
@@ -60,8 +65,18 @@ do {
         delete ingredient.index;
         ingredient.id = jhash.hash(ingredient.url);
         delete ingredient.url;
-        console.log("ingredient: " + JSON.stringify(ingredient, null, 2))
+        // console.log("ingredient: " + JSON.stringify(ingredient, null, 2))
+
+        // HERE YOU PUSH INGREDIENTS INTO ARRAY, working now!!!
+        console.log("Ingredient to add: " + ingredient.ingredient);
+        console.dir(_.find(recipesklikk.recipes, _.matches({ 'id': ingredient.id })).ingredients.push(ingredient.ingredient));
+        console.dir(_.find(recipesklikk.recipes, _.matches({ 'id': ingredient.id })));
+        // recipesklikk.recipes.[recipeid].ingredients.push.(recipesklikk.recipes.[recipeid].ingredients, ingredient.ingredient);
+        // console.dir(recipesklikk.recipes.[recipeid]);
       })
+      recipesklikk.ingredients.push.apply(recipesklikk.ingredients, obj.results.ingredients);
+      console.log("Ingredients count : " + obj.results.ingredients.length);
+      console.log("Ingredients array : " + recipesklikk.ingredients.length);
     }
 
     // use obj.count to determin end of do/while loop, i.e. set a variable "iterate" to false
@@ -79,3 +94,6 @@ do {
   // iterator needed since I'm using do/while
   i++;
 } while (content);
+
+console.log("Recipes     : " + recipesklikk.recipes.length);
+console.log("Ingredients : " + recipesklikk.ingredients.length);
