@@ -69,8 +69,8 @@ do {
 
         // HERE YOU PUSH INGREDIENTS INTO ARRAY, working now!!!
         console.log("Ingredient to add: " + ingredient.ingredient);
-        console.dir(_.find(recipesklikk.recipes, _.matches({ 'id': ingredient.id })).ingredients.push(ingredient.ingredient));
-        console.dir(_.find(recipesklikk.recipes, _.matches({ 'id': ingredient.id })));
+        _.find(recipesklikk.recipes, _.matches({ 'id': ingredient.id })).ingredients.push(ingredient.ingredient);
+        
         // recipesklikk.recipes.[recipeid].ingredients.push.(recipesklikk.recipes.[recipeid].ingredients, ingredient.ingredient);
         // console.dir(recipesklikk.recipes.[recipeid]);
       })
@@ -97,3 +97,5 @@ do {
 
 console.log("Recipes     : " + recipesklikk.recipes.length);
 console.log("Ingredients : " + recipesklikk.ingredients.length);
+
+console.dir(recipesklikk.recipes);
