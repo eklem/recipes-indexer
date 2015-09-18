@@ -1,4 +1,7 @@
 var request = require("sync-request");
+var jhash = require("jhash");
+            jhash.setSymbols('0123456789');
+            // jhash.setMaskLen(6);
 
 var recipesklikk = {
   "recipes" : [],
@@ -30,14 +33,35 @@ do {
     if (obj.results.recipes) {
       // console.dir(obj.results.recipes);
       // use recipes.length to run throug all recipes and transform JSON to correct structure
-      console.log("Recipes count    : " + obj.results.recipes.length);
+      // console.log("Recipes count    : " + obj.results.recipes.length);
+
+      // Use .map to edit object
+      obj.results.recipes.map(function (recipe){
+        delete recipe.index;
+        if (recipe.country) {
+          recipe.country = recipe.country.text;
+        }
+        if (recipe.cheff.href) {
+          recipe.cheff = recipe.cheff.text;
+        }
+        recipe.ingredients = [];
+        recipe.id = jhash.hash(recipe.url);
+        console.log("recipe: " + JSON.stringify(recipe, null, 2));
+      })
     }
 
     // Check if JSON contains ingredients
     if (obj.results.ingredients) {
       // console.dir(obj.results.ingredients);
       // use ingredients.length to run throug all recipes and transform JSON to correct structure
-      console.log("Ingredients count: " + obj.results.ingredients.length);
+      // console.log("Ingredients count: " + obj.results.ingredients.length);
+
+      obj.results.ingredients.map(function (ingredient){
+        delete ingredient.index;
+        ingredient.id = jhash.hash(ingredient.url);
+        delete ingredient.url;
+        console.log("ingredient: " + JSON.stringify(ingredient, null, 2))
+      })
     }
 
     // use obj.count to determin end of do/while loop, i.e. set a variable "iterate" to false
@@ -55,56 +79,3 @@ do {
   // iterator needed since I'm using do/while
   i++;
 } while (content);
-
-
-
-
-    // request("https://www.kimonolabs.com/api/2t7lj88q?apikey=LAnqfEDgqLNoBU5mzVnigMJqY9sHuK6F&kimlimit=10&kimoffset=" + offset, 
-    // function(err, response, body) {
-    //  console.log(body);
-    //  var obj = JSON.parse(body);
-
-    //  // Check if JSON contains recipes
-    //  if (obj.results.recipes) {
-    //    console.log(obj.results.recipes.length);
-    //    console.log("Object count: " + obj.count)
-    //  }
-
-    //  // Check if JSON contains ingredients
-    //  if (obj.results.ingredients) {
-    //    console.log(obj.results.ingredients.length);
-    //    console.log("Object count: " + obj.count)
-    //  }
-    // });
-
-
-
-
-  // request("https://www.kimonolabs.com/api/2t7lj88q?apikey=LAnqfEDgqLNoBU5mzVnigMJqY9sHuK6F&kimlimit=2500&kimoffset=" + offset, 
-  // function(err, response, body) {
-    
-  //   // Check for errors
-  //   if (err) {
-  //    console.dir("Error!\n" + err)
-  //   }
-  //   else {
-  //    // Get body and JSON parse it.
-  //    console.log("body");
-  //    var obj = JSON.parse(body);
-  //    // console.dir(obj.results.recipes);
-  //    // console.dir(obj.results.recipes.length);
-      
-  //    // Variable used to break loop if negative
-  //    console.dir(obj.count);
-
-  //  // If no more rows in body.results,
-  //  // return recipe array and break for-loop
-  //    if (obj.count <= -1) { 
-  //      results = false;
-  //    }
-  //   }
-
-  //   return results;
-
- 
-  // });
