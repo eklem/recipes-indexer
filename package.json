@@ -13,9 +13,10 @@
   "keywords": [
     "recipes",
     "search",
-    "\"document",
-    "processor\"",
-    "indexer"
+    "document processor",
+    "indexer",
+    "search-index",
+    "norch"
   ],
   "author": "Espen Klem",
   "license": "MIT",

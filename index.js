@@ -1,7 +1,9 @@
-var request = require("sync-request");
-var jhash   = require("jhash");
-              jhash.setSymbols('0123456789');
-var _       = require('lodash');
+var request  = require("sync-request");
+var jhash    = require("jhash");
+               jhash.setSymbols('0123456789');
+var _        = require('lodash');
+var jsonfile = require('jsonfile');
+               var dir = "/Users/eklem/node_modules/recipes-indexer/data/";
 
 
 var recipesklikk = {
@@ -99,3 +101,6 @@ console.log("Recipes     : " + recipesklikk.recipes.length);
 console.log("Ingredients : " + recipesklikk.ingredients.length);
 
 console.dir(recipesklikk.recipes);
+jsonfile.writeFileSync(dir + "klikk-recipes.json", recipesklikk.recipes, {spaces: 2})
+jsonfile.writeFileSync(dir + "klikk-ingredients.json", recipesklikk.ingredients, {spaces: 2})
+
